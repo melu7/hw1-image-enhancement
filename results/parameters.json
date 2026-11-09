@@ -1,0 +1,19 @@
+{
+  "seed": 42,
+  "contrast_alpha": 0.45,
+  "contrast_pivot": 128,
+  "noise_sigma": 5.0,
+  "stretch_percentiles": [
+    1.0,
+    99.0
+  ],
+  "gamma_target_mean": 0.5,
+  "gamma_per_image": {
+    "astronaut": 1.0253,
+    "chelsea": 1.0549,
+    "coffee": 0.9666,
+    "rocket": 0.7885
+  },
+  "opencv": "5.0.0",
+  "numpy": "2.0.2"
+}
