@@ -16,7 +16,7 @@ from reportlab.lib.enums import TA_JUSTIFY
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm
-from reportlab.platypus import (Image, KeepTogether, Paragraph, SimpleDocTemplate, Spacer, Table,
+from reportlab.platypus import (Image, KeepTogether, Paragraph, SimpleDocTemplate, Table,
                                 TableStyle)
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -178,14 +178,13 @@ story += [P("3. Methods and parameters", H1),
             "and keep the colour channels a, b unchanged, so the enhancement itself does not mix colours.", BODY),
           P("<b>M1 Baseline:</b> the degraded image, unprocessed. "
             f"<b>M2 Linear contrast stretching:</b> on L, the 1st and 99th percentiles are mapped to 0 and 255 "
-            f"(percentile clipping avoids control by a few extreme pixels). A supplementary variant stretches each "
+            f"(out = 255 (L - p1) / (p99 - p1), clipped to [0, 255]; percentile clipping avoids control by a few extreme pixels). A supplementary variant stretches each "
             f"B, G, R channel separately, only to discuss colour shifts. "
-            "<b>M3 Histogram equalization:</b> global equalization (<font face='Courier'>cv2.equalizeHist</font>) of L. "
+            "<b>M3 Histogram equalization:</b> global equalization (<font face='Courier'>cv2.equalizeHist</font>) of L: each level is mapped through the normalised cumulative histogram, out = 255 (CDF(L) - CDFmin) / (N - CDFmin). "
             f"<b>M4 Gamma correction:</b> on L, <i>out = 255(in/255)^gamma</i>, where gamma is estimated from the "
             f"degraded image alone so that its mean luminance becomes 0.5 (resulting gamma: "
             + ", ".join(f"{i} {gam[i]:.2f}" for i in IMAGES) + ").", BODY),
-          P("<b>Metrics</b> (always against the original): PSNR (own NumPy implementation, cross-checked with "
-            "<font face='Courier'>cv2.PSNR</font>), SSIM (scikit-image, colour, data range 255) and mean absolute "
+          P("<b>Metrics</b> (always against the original): PSNR (own NumPy implementation, checked against <font face='Courier'>cv2.PSNR</font> in <font face='Courier'>tests/sanity_checks.py</font>), SSIM (scikit-image, colour, data range 255) and mean absolute "
             "error (MAE, in the CSV). We also report the luminance standard deviation (contrast) and the mean "
             "Lab a/b difference to the original (colour shift).", BODY)]
 
