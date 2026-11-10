@@ -1,0 +1,3 @@
+# Only needed to rebuild the PDF report (python report/make_report.py).
+# Pinned below 4.3 because newer ReportLab versions need Python 3.10+.
+reportlab>=4.0,<4.3
